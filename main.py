@@ -25,7 +25,7 @@ class App(tk.Tk):
         
         # configure the root window
         self.title('Random Metal Band Research 0.1')
-        self.iconbitmap("498448.ico")
+        self.iconbitmap("randommetalband.ico")
 
         # button M-A
         self.button_ma = ttk.Button(self, text='Randon band from M-A')
