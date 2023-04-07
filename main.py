@@ -3,6 +3,7 @@
 
 import tkinter as tk
 from tkinter import simpledialog
+from tkinter import messagebox
 from tkinter import OptionMenu
 from tkinter import ttk
 import tkinter.font as tkFont
@@ -45,11 +46,11 @@ class App(tk.Tk):
                 for row in reader:
                     nombres_bandas.append(row[0])
         else:
-            nombres_bandas = ['None saved yet']
+            nombres_bandas = ['None saved yet','None saved yet']
         # Crear una variable de cadena para almacenar la opción seleccionada
-        var = tk.StringVar(self, value = nombres_bandas[0])
+        var = tk.StringVar(self, value = "Saved bands")# value = nombres_bandas[0])
         # Crear un widget OptionMenu con los valores leídos del archivo csv
-        self.option = OptionMenu(self, var, *nombres_bandas, command = self.cargar_banda_csv)
+        self.option = OptionMenu(self, var, *nombres_bandas[1:], command = self.cargar_banda_csv)
         self.option.grid(row = 1, column = 2, columnspan = 2, padx = (10, 10), pady = 10)
         
         # label info
@@ -187,16 +188,34 @@ class App(tk.Tk):
         #self.label_disco.config(text=self.discografia[a])
 
     def button_to_csv(self):
+        nombres_bandas = []
         # open the file in the write mode
         if os.path.exists('bands.csv'):
-            with open('bands.csv', 'a', newline='') as f:
-                # create the csv writer
-                writer = csv.writer(f)
-                # write the infoband
-                self.infoband.append(self.discografia)
-                writer.writerow(self.infoband)
+            with open('bands.csv', 'r', newline='') as f:
+                reader = csv.reader(f)
+                for row in reader:
+                    nombres_bandas.append(row[0])
+            # Next bit of code is to check if there is a band called the same already in the csv file or not, and if you want to save it anyway or not.
+            if self.infoband[0] in nombres_bandas:
+                answer = messagebox.askquestion ("WARNING", "There is already a band with that name in bands.csv, do you want to save it anyway?")
+                if answer == "yes":
+                    with open('bands.csv', 'a', encoding="utf-8", newline='') as f:
+                        # create the csv writer
+                        writer = csv.writer(f)
+                        # write the infoband
+                        self.infoband.append(self.discografia)
+                        writer.writerow(self.infoband)
+                        self.option["menu"].add_command(label=self.infoband[0])
+            else:
+                with open('bands.csv', 'a', encoding="utf-8", newline='') as f:
+                    # create the csv writer
+                    writer = csv.writer(f)
+                    # write the infoband
+                    self.infoband.append(self.discografia)
+                    writer.writerow(self.infoband)
+                    self.option["menu"].add_command(label=self.infoband[0])
         else:
-            with open('bands.csv', 'w', newline='') as f:
+            with open('bands.csv', 'w', encoding="utf-8", newline='') as f:
                 # create the csv writer
                 writer = csv.writer(f)
                 # write the header
@@ -204,8 +223,9 @@ class App(tk.Tk):
                 # write the infoband
                 self.infoband.append(self.discografia)
                 writer.writerow(self.infoband)
-        self.option["menu"].add_command(label=self.infoband[0])#, command=lambda valor=self.infoband[0]: variable.set(valor))
+                self.option["menu"].add_command(label=self.infoband[0])#, command=lambda valor=self.infoband[0]: variable.set(valor))
 
+                        
     def cargar_banda_csv(self, value):
         with open('bands.csv', 'r') as f:
             reader = csv.reader(f)
