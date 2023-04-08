@@ -17,15 +17,15 @@ import csv
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        #colores y fuentes
+        # style
         self.style = ttk.Style(self)
         self.style.theme_use('vista')
-        # variables que voy a usar:
-        self.infoband = [] # [NOMBRE, PAIS, LOCATION, STATUS, FORMED IN, YEARS ACTIVE, GENRE, LYRICS THEME, LAST LABEL
+        # variables
+        self.infoband = [] # [BAND, COUNTRY, LOCATION, STATUS, FORMED IN, YEARS ACTIVE, GENRE, LYRICS THEME, LAST LABEL]
         self.discografia = []
         
         # configure the root window
-        self.title('Random Metal Band Research 0.1')
+        self.title('Random Metal Band by pephorror')
         self.iconbitmap("randommetalband.ico")
 
         # button M-A
@@ -47,9 +47,9 @@ class App(tk.Tk):
                     nombres_bandas.append(row[0])
         else:
             nombres_bandas = ['None saved yet','None saved yet']
-        # Crear una variable de cadena para almacenar la opción seleccionada
+        # Create a StringVar to store the selected option
         var = tk.StringVar(self, value = "Saved bands")# value = nombres_bandas[0])
-        # Crear un widget OptionMenu con los valores leídos del archivo csv
+        # Create a widget OptionMenu - values read from and saved in nombres_bandas csv
         self.option = OptionMenu(self, var, *nombres_bandas[1:], command = self.cargar_banda_csv)
         self.option.grid(row = 1, column = 2, columnspan = 2, padx = (10, 10), pady = 10)
         
@@ -74,22 +74,22 @@ class App(tk.Tk):
         self.button_discogs['command'] = self.button_discog
         self.button_discogs.grid(row = 4, column = 3, padx = (10, 20), pady = 10)
 
-        #button GUARDAR A CSV
+        #button SAVE TO CSV
         self.button_csv = ttk.Button(self, text='Add to bands.csv')
         self.button_csv['command'] = self.button_to_csv
         self.button_csv.grid(row = 5, column = 1, columnspan = 2, padx = (10, 20), pady = (10,10))
 
     def random_band_info_metalarchives(self):
         '''funcion que extrae informacion de una banda aleatoria de metalarchives'''
-        self.infoband = [] # [NOMBRE, PAIS, LOCATION, STATUS, FORMED IN, YEARS ACTIVE, GENRE, LYRICS THEME, LAST LABEL
+        self.infoband = []
         self.discografia = []
-        #Primero scrap y soup de una banda aleatoria de metal archives
+        # scrap & soup random band from metal-archives
         url = 'https://www.metal-archives.com/band/random'
         pagina = requests.get(url)
         soup = BeautifulSoup(pagina.content, 'html.parser')
         title = soup.title.text
 
-        #Ahora codigo para extraer el id de la banda aleatoria y generar la url de la discografia (url2)
+        # Get band ID and create url2 (url with discography)
         lis = (soup.select('li'))
         linea_con_id = str(lis[35])
         pos_ini_band_id = (linea_con_id).find('id')
@@ -119,20 +119,19 @@ class App(tk.Tk):
             self.discografia.append(disco.text)
 
         # Update the label text with the band name and genre
-        # [0 NOMBRE, 1 PAIS, 2 LOCATION, 3 STATUS, 4 FORMED IN, 5 GENRE, 6 LYRICS THEME, 7 LAST LABEL
         self.label_info.config(text="BAND: " + self.infoband[0] + "\nCOUNTRY: " + self.infoband[1] + "\nFORMED IN: " + self.infoband[4] + "\nGENRE: " + self.infoband[5] + "\nLYRICS THEME: " + self.infoband[6] + "\nLAST KNOWN LABEL: " + self.infoband[7])
         return self.infoband, self.discografia
 
     def manual_band_info_metalarchives(self):
         url = simpledialog.askstring(title="Input", prompt="Input the metal-archives url of a band you like:")
-        '''funcion que extrae informacion de una banda aleatoria de metalarchives'''
-        self.infoband = [] # [NOMBRE, PAIS, LOCATION, STATUS, FORMED IN, YEARS ACTIVE, GENRE, LYRICS THEME, LAST LABEL
+        '''you input a url from metal-archives and the program gathers the info'''
+        self.infoband = []
         self.discografia = []
         pagina = requests.get(url)
         soup = BeautifulSoup(pagina.content, 'html.parser')
         title = soup.title.text
 
-        #Ahora codigo para extraer el id de la banda aleatoria y generar la url de la discografia (url2)
+        # Get band ID and create url2 (url with discography)
         lis = (soup.select('li'))
         linea_con_id = str(lis[35])
         pos_ini_band_id = (linea_con_id).find('id')
@@ -162,30 +161,24 @@ class App(tk.Tk):
             self.discografia.append(disco.text)
 
         # Update the label text with the band name and genre
-        # [0 NOMBRE, 1 PAIS, 2 LOCATION, 3 STATUS, 4 FORMED IN, 5 GENRE, 6 LYRICS THEME, 7 LAST LABEL
         self.label_info.config(text="BAND: " + self.infoband[0] + "\nCOUNTRY: " + self.infoband[1] + "\nFORMED IN: " + self.infoband[4] + "\nGENRE: " + self.infoband[5] + "\nLYRICS THEME: " + self.infoband[6] + "\nLAST KNOWN LABEL: " + self.infoband[7])
         return self.infoband, self.discografia
 
     def button_bandcamp(self):
         a = random.randint(0, len(self.discografia)-1)
-        wb.open_new_tab("https://bandcamp.com/search?q=" + self.infoband[0] + "&item_type")# + "+" + infoband[5])
-        # Update the label text with the record you had search for
-        #self.label_disco.config(text=self.discografia[a])
+        wb.open_new_tab("https://bandcamp.com/search?q=" + self.infoband[0] + "&item_type")
 
     def button_youtube(self):
         a = random.randint(0, len(self.discografia)-1)
-        wb.open_new_tab("https://www.youtube.com/results?search_query=" + self.infoband[0])# + "+" + infoband[5])
-        #self.label_disco.config(text=self.discografia[a])
+        wb.open_new_tab("https://www.youtube.com/results?search_query=" + self.infoband[0])
     
     def button_spotify(self):
         a = random.randint(0, len(self.discografia)-1)
-        wb.open_new_tab("https://open.spotify.com/search/" + self.infoband[0])# + "+" + self.discografia[a])# + "+" + infoband[5])
-        #self.label_disco.config(text=self.discografia[a])
+        wb.open_new_tab("https://open.spotify.com/search/" + self.infoband[0])
 
     def button_discog(self):
         a = random.randint(0, len(self.discografia)-1)
         wb.open_new_tab("https://www.discogs.com/search/?q=" + self.infoband[0] + "&type=all")
-        #self.label_disco.config(text=self.discografia[a])
 
     def button_to_csv(self):
         nombres_bandas = []
@@ -223,7 +216,7 @@ class App(tk.Tk):
                 # write the infoband
                 self.infoband.append(self.discografia)
                 writer.writerow(self.infoband)
-                self.option["menu"].add_command(label=self.infoband[0])#, command=lambda valor=self.infoband[0]: variable.set(valor))
+                self.option["menu"].add_command(label=self.infoband[0])
 
                         
     def cargar_banda_csv(self, value):
