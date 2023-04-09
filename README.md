@@ -1,10 +1,9 @@
 # RandomMetalBand
-Project to get the information of a random band from metal-archives and search for that band in bandcamp, spotify, youtube or discogs. If you like the band you can save its info in a csv file.
 
-I used Tkinter for the GUI.
+The main libraries of the project are tkinter and pylast for the LASTFM API.
 
-Very simple GUI:
-Top button to get info from a random band from metal-archives.
-With the other buttons you can search for that random band in bandcamp, youtube, spotify or discogs, or save the info of the band to a csv file (it also saves the discography of the band, not only the fields that appears in the gui).
+Project to get the information of a random band from metal-archives and search for that band in bandcamp, spotify, youtube, discogs, lastfm or open its site in metal-archives. If you like the band you can save it info in a csv file to don't forget about them.
 
-If you like the band you cand add it to a 'bandas.csv' file to biild a database with the bands you discover.
+Usign the lastfm API you can get similar artists to the artist you had found or saved.
+
+Using the lastfm API you can generate a new windows with the charts for metal music genres.
