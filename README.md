@@ -6,4 +6,4 @@ Project to get the information of a random band from metal-archives and search f
 
 Usign the lastfm API you can get similar artists to the artist you had found or saved.
 
-Using the lastfm API you can generate a new windows with the charts for metal music genres.
+Using the lastfm API you can generate a html file with the charts for metal music genres.
