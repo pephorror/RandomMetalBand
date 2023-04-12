@@ -36,7 +36,7 @@ class App(tk.Tk):
         self.iconbitmap("randommetalband.ico")
 
         # button M-A
-        self.button_ma = ttk.Button(self, text='Randon band from M-A')
+        self.button_ma = ttk.Button(self, text='Randon band from M-A', width = 25)
         self.button_ma['command'] = self.random_band_info_metalarchives
         self.button_ma.grid(row = 1, column = 0, columnspan = 2, padx = (10, 10), pady = 10)
 
@@ -65,41 +65,41 @@ class App(tk.Tk):
         self.label_info.grid(row = 3, column = 0, columnspan = 4)
 
         # button Bandcamp
-        self.button_band = ttk.Button(self, text='Search in Bandcamp')
+        self.button_band = ttk.Button(self, text='Search in Bandcamp', width = 20)
         self.button_band['command'] = self.button_bandcamp
         self.button_band.grid(row = 4, column = 0, padx = (20, 10), pady = 10)
         # button Youtube
-        self.button_you = ttk.Button(self, text='Search in Youtube')
+        self.button_you = ttk.Button(self, text='Search in Youtube', width = 20)
         self.button_you['command'] = self.button_youtube
         self.button_you.grid(row = 4, column = 1, padx = 10, pady = 10)
         # button Spotify
-        self.button_spoti = ttk.Button(self, text='Search in Spotify')
+        self.button_spoti = ttk.Button(self, text='Search in Spotify', width = 20)
         self.button_spoti['command'] = self.button_spotify
         self.button_spoti.grid(row = 4, column = 2, padx = 10, pady = 10)
         # button Discogs
-        self.button_discogs = ttk.Button(self, text='Search in Discogs')
+        self.button_discogs = ttk.Button(self, text='Search in Discogs', width = 20)
         self.button_discogs['command'] = self.button_discog
         self.button_discogs.grid(row = 4, column = 3, padx = (10, 20), pady = 10)
 
         # button LastFM
-        self.button_last = ttk.Button(self, text='Search in LastFM')
+        self.button_last = ttk.Button(self, text='Search in LastFM', width = 20)
         self.button_last['command'] = self.button_lastfm
         self.button_last.grid(row = 5, column = 0, padx = (20, 10), pady = 10)
         #button Get Similar Artist usando pylast (API LASTFM)
-        self.button_similar = ttk.Button(self, text='Get similar')
+        self.button_similar = ttk.Button(self, text='Get similar', width = 20)
         self.button_similar['command'] = self.get_similar
         self.button_similar.grid(row = 5, column = 1, padx = 10, pady = 10)
         # button LastFM METAL CHARTS
-        self.button_charts = ttk.Button(self, text='LastFM Metal Charts')
+        self.button_charts = ttk.Button(self, text='LastFM Metal Charts', width = 20)
         self.button_charts['command'] = self.lastfm_charts
         self.button_charts.grid(row = 5, column = 2, padx = 10, pady = 10)
         # button open in metal archives
-        self.button_ma = ttk.Button(self, text='Open in M-A')
+        self.button_ma = ttk.Button(self, text='Open in M-A', width = 20)
         self.button_ma['command'] = self.button_ma_url
         self.button_ma.grid(row = 5, column = 3, padx = (10, 20), pady = 10)
 
         #button SAVE TO CSV
-        self.button_csv = ttk.Button(self, text='Add to bands.csv')
+        self.button_csv = ttk.Button(self, text='Add to bands.csv', width = 25)
         self.button_csv['command'] = self.button_to_csv
         self.button_csv.grid(row = 6, column = 1, columnspan = 2, padx = (10, 20), pady = (10,10))
 
@@ -259,7 +259,7 @@ class App(tk.Tk):
             # CREATE A OFFLINE HTML WEB THAT SHOWS THE CHARTS
             df = df.groupby("GENRE").apply(lambda x: x.sort_values("SCROBBLES", ascending = False)) #DF WITH charts by genre
             df2 = df.sort_values("SCROBBLES", ascending = False) # df with charts in global metal mode
-            html = df.to_html(index=False, justify='center', classes=['table', 'table-striped'], table_id='metal_charts')
+            html = df.to_html(index=False, border = 0, justify='center', classes=['table', 'table-striped'], table_id='metal_charts')
             with open('metal_charts.html', 'w') as f:
                 f.write(html)
             wb.open_new_tab("metal_charts.html")
