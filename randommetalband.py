@@ -28,8 +28,8 @@ class App(tk.Tk):
         self.discografia = []
         self.ma_url = "" # I'll save here the url of the random band found in metal archives
         # API LASTFM
-        self.API_KEY = "41e86ee4787f1a444ba944478a89190c"
-        self.API_SECRET = "b2e3be0dccacebf5f16eea75b735d135"
+        self.API_KEY = "TU API KEY"
+        self.API_SECRET = "TU API SECRET"
         
         # configure the root window
         self.title('Random Metal Band by pephorror')
